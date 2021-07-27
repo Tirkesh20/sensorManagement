@@ -9,7 +9,8 @@ import java.lang.annotation.*;
 @Target( { ElementType.METHOD, ElementType.FIELD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SensorConstraint {
-    String message() default "Invalid phone number";
+    String message() default "Start point can t be bigger than end point";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+
 }
