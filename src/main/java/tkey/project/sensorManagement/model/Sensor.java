@@ -1,37 +1,62 @@
 package tkey.project.sensorManagement.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import tkey.project.sensorManagement.validator.SensorConstraint;
 
 
 @Entity
-public class Sensor implements Serializable {
+@SensorConstraint
+public class Sensor implements Serializable, Annotation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
+    @Size( max =30 )
+    private String name;
+
+    @NotBlank
+    @Size( max =15 )
     private String sensorModel;
+
     private Long startPoint;
     private Long endPoint;
-    private String sensorType;
-    private String modelUnit;
+
+    @Enumerated(EnumType.STRING)
+    private SensorType sensorType;
+
+    @Enumerated(EnumType.STRING)
+    private ModelUnit modelUnit;
+
+    @NotBlank
+    @Size( max =40 )
     private String locations;
 
+    @Size(max = 200)
+    private String description;
 
     public Sensor(){
 
     }
 
-    public Sensor(Long id, String sensorModel,
+    public Sensor(Long id,String name ,String sensorModel,
                   Long startPoint, Long endPoint,
-                  String sensorType, String modelUnit,
-                  String locations) {
+                  SensorType sensorType, ModelUnit modelUnit,
+                  String locations,String description) {
         this.id = id;
+        this.name=name;
         this.sensorModel = sensorModel;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.sensorType = sensorType;
         this.modelUnit = modelUnit;
         this.locations = locations;
+        this.description=description;
     }
 
     public void setId(Long id) {
@@ -41,6 +66,14 @@ public class Sensor implements Serializable {
     @Id
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSensorModel() {
@@ -67,19 +100,19 @@ public class Sensor implements Serializable {
         this.endPoint = to;
     }
 
-    public String getSensorType() {
+    public SensorType getSensorType() {
         return sensorType;
     }
 
-    public void setSensorType(String type) {
+    public void setSensorType(SensorType type) {
         this.sensorType = type;
     }
 
-    public String getModelUnit() {
+    public ModelUnit getModelUnit() {
         return modelUnit;
     }
 
-    public void setModelUnit(String unit) {
+    public void setModelUnit(ModelUnit unit) {
         this.modelUnit = unit;
     }
 
@@ -91,18 +124,31 @@ public class Sensor implements Serializable {
         this.locations = location;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     @Override
     public String toString() {
         return "Sensor{" +
                 "id=" + id +
-                ", model='" + sensorModel + '\'' +
-                ", from=" + startPoint +
-                ", to=" + endPoint +
-                ", type='" + sensorType + '\'' +
-                ", unit='" + modelUnit + '\'' +
-                ", location='" + locations + '\'' +
-                ", description='"  + '\'' +
+                ", name='" + name + '\'' +
+                ", sensorModel='" + sensorModel + '\'' +
+                ", startPoint=" + startPoint +
+                ", endPoint=" + endPoint +
+                ", sensorType=" + sensorType +
+                ", modelUnit=" + modelUnit +
+                ", locations='" + locations + '\'' +
+                ", description='" + description + '\'' +
                 '}';
+    }
+
+    @Override
+    public Class<? extends Annotation> annotationType() {
+        return null;
     }
 }

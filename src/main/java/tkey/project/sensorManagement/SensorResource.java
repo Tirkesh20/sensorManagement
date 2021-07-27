@@ -1,24 +1,37 @@
 package tkey.project.sensorManagement;
 
 
+import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import tkey.project.sensorManagement.model.Sensor;
 import tkey.project.sensorManagement.service.SensorService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@ComponentScan("./tkey.project.sensorManagement")
 @RequestMapping("/sensor")
 public class SensorResource {
+
 
     private final SensorService service;
 
     @Autowired
     public SensorResource(SensorService service) {
         this.service = service;
+    }
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
     }
 
     @GetMapping("/all")
@@ -28,13 +41,17 @@ public class SensorResource {
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<Sensor> getSensorById(@PathVariable("id") Long id) throws Throwable {
+    public ResponseEntity<Sensor> getSensorById(@PathVariable("id") Long id){
     Sensor sensor=service.findSensorById(id);
     return new ResponseEntity<>(sensor,HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Sensor> addSensor(@RequestBody Sensor sensor){
+    public ResponseEntity<Sensor> addSensor(@Valid @RequestBody Sensor sensor, BindingResult result){
+        if (result.hasErrors())
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
         Sensor newSensor= service.addSensor(sensor);
         return new ResponseEntity<>(newSensor,HttpStatus.CREATED);
     }
