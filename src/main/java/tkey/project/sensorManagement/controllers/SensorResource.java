@@ -1,4 +1,4 @@
-package tkey.project.sensorManagement;
+package tkey.project.sensorManagement.controllers;
 
 
 import org.springframework.beans.NotReadablePropertyException;
