@@ -17,6 +17,7 @@ import tkey.project.sensorManagement.service.SensorService;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @ComponentScan("./tkey.project.sensorManagement")
 @RequestMapping("/sensor")
