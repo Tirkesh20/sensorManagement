@@ -28,9 +28,11 @@ public class Sensor implements Serializable, Annotation {
     private Long endPoint;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "sensor_type",length = 15)
     private SensorType sensorType;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 15)
     private ModelUnit modelUnit;
 
     @NotBlank
@@ -38,6 +40,7 @@ public class Sensor implements Serializable, Annotation {
     private String locations;
 
     @Size(max = 200)
+    @Column(length = 210)
     private String description;
 
     public Sensor(){
@@ -59,14 +62,7 @@ public class Sensor implements Serializable, Annotation {
         this.description=description;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    @Id
-    public Long getId() {
-        return id;
-    }
 
     public String getName() {
         return name;
@@ -100,6 +96,8 @@ public class Sensor implements Serializable, Annotation {
         this.endPoint = to;
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 15)
     public SensorType getSensorType() {
         return sensorType;
     }
@@ -108,6 +106,8 @@ public class Sensor implements Serializable, Annotation {
         this.sensorType = type;
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 15)
     public ModelUnit getModelUnit() {
         return modelUnit;
     }

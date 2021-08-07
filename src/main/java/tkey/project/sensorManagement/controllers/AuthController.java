@@ -82,7 +82,7 @@ public class AuthController {
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+            Role userRole = roleRepository.findByName(ERole.ROLE_VIEWER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
@@ -92,9 +92,11 @@ public class AuthController {
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                     roles.add(adminRole);
                 } else {
-                    Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                    if ("user".equals(role)){
+                    Role userRole = roleRepository.findByName(ERole.ROLE_VIEWER)
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                     roles.add(userRole);
+                }
                 }
             });
         }

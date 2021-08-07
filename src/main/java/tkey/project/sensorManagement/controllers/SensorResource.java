@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @ComponentScan("./tkey.project.sensorManagement")
 @RequestMapping("/sensor")
+@Transactional
 public class SensorResource {
 
 
@@ -60,7 +62,7 @@ public class SensorResource {
         return new ResponseEntity<>(newSensor,HttpStatus.OK);
     }
 
-    @PutMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteSensor(@PathVariable("id")Long id){
          service.deleteSensor(id);
         return new ResponseEntity<>(HttpStatus.OK);
