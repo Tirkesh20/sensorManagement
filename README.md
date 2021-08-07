@@ -3,8 +3,8 @@
 После того как Hibernate сгенерируют базу данных необходима ввести следующий query
 INSERT INTO roles(name) VALUES('ROLE_VIEWER');
 INSERT INTO roles(name) VALUES('ROLE_ADMIN');
-чтобы в таблице ролей появили роли 
-потом с помощи postmana или его аналогов необходима зарегистрировать ползователя в систему при помощи json row в это url
+чтобы в таблице ролей появились роли 
+потом с помощи postmana или его аналогов необходима зарегистрировать ползователя в систему при помощи json row в этот url
 localhost:8080/api/auth/signup 
 {
     "username":"test",
