@@ -1,5 +1,7 @@
 package com.mm.sensorManagement.security;
 
+import com.mm.sensorManagement.security.jwt.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.mm.sensorManagement.security.jwt.AuthTokenFilter;
-import com.mm.sensorManagement.security.services.UserDetailsServiceImpl;
+import com.mm.sensorManagement.security.services.DefaultUserDetailsService;
 import com.mm.sensorManagement.security.jwt.AuthEntryPointJwt;
 
 @Configuration
@@ -22,17 +24,20 @@ import com.mm.sensorManagement.security.jwt.AuthEntryPointJwt;
         prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final DefaultUserDetailsService userDetailsService;
     private final AuthEntryPointJwt unauthorizedHandler;
+    private final JwtUtils jwtUtils;
 
-    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
+    @Autowired
+    public WebSecurityConfig(DefaultUserDetailsService userDetailsService, AuthEntryPointJwt unauthorizedHandler, JwtUtils jwtUtils) {
         this.userDetailsService = userDetailsService;
         this.unauthorizedHandler = unauthorizedHandler;
+        this.jwtUtils = jwtUtils;
     }
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter();
+        return new AuthTokenFilter(jwtUtils,userDetailsService);
     }
 
     @Override

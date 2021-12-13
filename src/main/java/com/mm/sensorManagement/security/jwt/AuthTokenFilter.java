@@ -6,7 +6,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.mm.sensorManagement.security.services.UserDetailsServiceImpl;
+import com.mm.sensorManagement.security.services.DefaultUserDetailsService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +19,15 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 public class AuthTokenFilter extends OncePerRequestFilter {
-    @Autowired
-    private JwtUtils jwtUtils;
+
+    private final JwtUtils jwtUtils;
+    private final DefaultUserDetailsService userDetailsService;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    public AuthTokenFilter(JwtUtils jwtUtils, DefaultUserDetailsService userDetailsService) {
+        this.jwtUtils = jwtUtils;
+        this.userDetailsService = userDetailsService;
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
